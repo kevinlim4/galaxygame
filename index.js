@@ -4,6 +4,8 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+document.body.style.cursor = 'crosshair';
+
 const scoreValue = document.querySelector('#scoreValue');
 const levelValue = document.querySelector('#levelValue');
 const lifeValue = document.querySelector('#lifeValue');
@@ -199,11 +201,11 @@ function spawnEnemies() {
         }
         
         const color = `hsl(${Math.random() * 360}, 50%, 50%)`;
-        const angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x);
-        const velocity = { x: Math.cos(angle) * level, y: Math.sin(angle) * level };
+        const angle = Math.atan2(player.y - y, player.x - x);
+        const velocity = { x: Math.cos(angle) * (level + 1), y: Math.sin(angle) * (level + 1) };
 
         enemies.push(new Enemy(x, y, radius, color, velocity));
-    }, 1000);
+    }, 500);
 }
 
 function animate() {
@@ -332,8 +334,8 @@ function init(){
 
 window.addEventListener('click', (event) => {
     const angle = Math.atan2(
-        event.clientY - canvas.height / 2,
-        event.clientX - canvas.width / 2
+        event.clientY - player.y,
+        event.clientX - player.x
     );
     const velocity = { 
         x: Math.cos(angle) * 6, 
