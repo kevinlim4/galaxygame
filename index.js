@@ -9,8 +9,8 @@ const levelValue = document.querySelector('#levelValue');
 const lifeValue = document.querySelector('#lifeValue');
 
 // Level up Modal
-const infoModal = document.querySelector('#infoModal');
-const infoModalValue = document.querySelector('#infoModalValue');
+// const infoModal = document.querySelector('#infoModal');
+// const infoModalValue = document.querySelector('#infoModalValue');
 
 // Status Label
 const statusLabel = document.querySelector('#statusLabel');
@@ -34,6 +34,19 @@ class Player {
     }
 
     draw() {
+        if (keyW == true) {
+            this.y -= 2;
+        }
+        if (keyA == true) {
+            this.x -= 2;
+        }
+        if (keyS == true) {
+            this.y += 2;
+        }
+        if (keyD == true) {
+            this.x += 2;
+        }
+
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         ctx.fillStyle = this.color;
@@ -43,29 +56,29 @@ class Player {
     hitByEnemy(damage) {
         this.color = 'red';
         ctx.fillStyle = this.color;
-        infoModalValue.classList.add("text-red-500");
-        infoModalValue.innerHTML = `-${damage}`;
-        infoModal.style.display = 'flex';
+        //infoModalValue.classList.add("text-red-500");
+        //infoModalValue.innerHTML = `-${damage}`;
+        //infoModal.style.display = 'flex';
         setInterval(() => {
             this.color = 'white';
             ctx.fillStyle = this.color;
-            infoModalValue.classList.remove("text-red-500");
-            infoModal.style.display = 'none';
+            //infoModalValue.classList.remove("text-red-500");
+            //infoModal.style.display = 'none';
         }, 1000);
     }
 
     levelUp() {
         this.color = 'yellow';
         ctx.fillStyle = this.color;
-        infoModalValue.classList.add("text-yellow-400");
-        infoModalValue.innerHTML = "Level Up!";
-        infoModal.style.display = 'flex';
+        //infoModalValue.classList.add("text-yellow-400");
+        //infoModalValue.innerHTML = "Level Up!";
+        //infoModal.style.display = 'flex';
         setInterval(() => {
             this.color = 'white';
             ctx.fillStyle = this.color;
-            infoModalValue.classList.remove("text-yellow-400");
-            infoModal.style.display = 'none';
-        }, 1500);
+            //infoModalValue.classList.remove("text-yellow-400");
+            //infoModal.style.display = 'none';
+        }, 1000);
     }
 }
 
@@ -156,7 +169,7 @@ let xp;
 let level;
 let life;
 
-const starsQtde = 150;
+const starsQtde = 200;
 const x = Array.from({length: starsQtde}, () => Math.random() * canvas.offsetWidth);
 const y = Array.from({length: starsQtde}, () => Math.random() * canvas.offsetHeight);
 const radius = Array.from({length: starsQtde}, () => Math.random() * 1.1);
@@ -328,7 +341,7 @@ window.addEventListener('click', (event) => {
     };
 
     projectiles.push(new Projectile(
-        canvas.width / 2, canvas.height / 2, 
+        player.x, player.y, 
         5, 'white', velocity
     ));
 });
@@ -348,3 +361,49 @@ restartGameBtn.addEventListener('click', () => {
     endGameModal.style.display = 'none';
     statusLabel.style.display = 'block';
 });
+
+let keyW = false;
+let keyA = false;
+let keyS = false;
+let keyD = false;
+
+window.addEventListener("keydown", onKeyDown, false);
+window.addEventListener("keyup", onKeyUp, false);
+
+function onKeyDown(event) {
+    let keyCode = event.keyCode;
+    switch (keyCode) {
+        case 87: //w
+            keyW = true;
+            break;
+        case 65: //a
+            keyA = true;
+            break;
+        case 83: //s
+            keyS = true;
+            break;
+        case 68: //d
+            keyD = true;
+            break;
+    }
+}
+
+function onKeyUp(event) {
+    var keyCode = event.keyCode;
+  
+    switch (keyCode) {
+        case 87: //w
+            keyW = false;
+            break;
+        case 65: //a
+            keyA = false;
+            break;
+        case 83: //s
+            keyS = false;
+            break;
+        case 68: //d
+            keyD = false;
+            break;
+    }
+  }
+  
