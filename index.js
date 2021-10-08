@@ -9,7 +9,8 @@ const levelValue = document.querySelector('#levelValue');
 const lifeValue = document.querySelector('#lifeValue');
 
 // Level up Modal
-const levelUpModal = document.querySelector('#levelUpModal');
+const infoModal = document.querySelector('#infoModal');
+const infoModalValue = document.querySelector('#infoModalValue');
 
 // Start Game Modal
 const startGameBtn = document.querySelector('#startGameBtn');
@@ -43,23 +44,29 @@ class Player {
         ctx.fill();
     }
 
-    hitByEnemy() {
+    hitByEnemy(damage) {
         this.color = 'red';
         ctx.fillStyle = this.color;
+        infoModalValue.classList.add("text-red-500");
+        infoModalValue.innerHTML = "-" + damage;
+        infoModal.style.display = 'flex';
         setInterval(() => {
             this.color = 'white';
             ctx.fillStyle = this.color;
-        }, 500);
+            infoModal.style.display = 'none';
+        }, 1000);
     }
 
     levelUp() {
         this.color = 'yellow';
         ctx.fillStyle = this.color;
-        levelUpModal.style.display = 'flex';
+        infoModalValue.classList.add("text-yellow-400");
+        infoModalValue.innerHTML = "Level up!";
+        infoModal.style.display = 'flex';
         setInterval(() => {
             this.color = 'white';
             ctx.fillStyle = this.color;
-            levelUpModal.style.display = 'none';
+            infoModal.style.display = 'none';
         }, 1000);
     }
 }
@@ -208,7 +215,8 @@ function animate() {
         
         // enemy hits player
         if (distance - enemy.radius - player.radius < 0.1) {
-            life -= Math.floor(enemy.radius);
+            const damage = Math.floor(enemy.radius);
+            life -= damage;
             lifeValue.innerHTML = life;
             if (life <= 0) {
                 // game over
@@ -222,7 +230,7 @@ function animate() {
                     enemies.splice(enemyIndex, 1);
                     projectiles.splice(projectileIndex, 1);
                 }, 0);
-                player.hitByEnemy();
+                player.hitByEnemy(damage);
             }
         }
 
