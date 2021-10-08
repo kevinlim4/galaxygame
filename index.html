@@ -7,7 +7,9 @@
   </head>
   <body style="background: black">
     <div class="fixed text-white text-sm ml-2 mt-1 select-none">
-        <span>Score: <span id="scoreValue">0</span></span>
+        <span>Score: <span id="scoreValue">0</span></span><br>
+        <span>Level: <span id="levelValue">1</span></span><br>
+        <span>Life: <span id="lifeValue">100</span></span>
     </div>
     
     <!-- Start Game Modal -->
@@ -21,13 +23,26 @@
             </button>
         </div>
     </div>
-    
+
+    <!-- Level up Modal -->
+    <div class="fixed inset-0 hidden items-center justify-center select-none" id="levelUpModal">
+        <p class="text-yellow-400 text-sm leading-none mb-12">Level Up!</p><br>
+    </div>
+
     <!-- Game Over Modal -->
     <div class="fixed inset-0 hidden items-center justify-center" id="endGameModal">
         <div class="bg-gray-800 max-w-md w-full p-6 text-center">
             <h1 class="text-white text-5xl font-bold leading-none mb-4">Game Over!</h1>
-            <h1 class="text-white text-4xl font-bold leading-none" id="modalScoreLabel">0</h1>
-            <p class="text-sm text-gray-500 mb-4">Points</p>
+            <div class="space-x-10">
+                <div class="inline-block">
+                    <h1 class="text-white text-4xl font-bold leading-none" id="modalScoreValue">0</h1>
+                    <p class="text-sm text-gray-500 mb-4">Points</p>
+                </div>
+                <div class="inline-block">
+                    <h1 class="text-white text-4xl font-bold leading-none" id="modalLevelValue">0</h1>
+                    <p class="text-sm text-gray-500 mb-4">Level</p> 
+                </div>
+            </div>
             <div>
                 <button 
                     class="bg-purple-500 text-white w-full py-3 rounded-full font-semibold text-sm" 

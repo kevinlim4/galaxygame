@@ -5,11 +5,19 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const scoreValue = document.querySelector('#scoreValue');
+const levelValue = document.querySelector('#levelValue');
+const lifeValue = document.querySelector('#lifeValue');
 
+// Level up Modal
+const levelUpModal = document.querySelector('#levelUpModal');
+
+// Start Game Modal
 const startGameBtn = document.querySelector('#startGameBtn');
 const startGameModal = document.querySelector('#startGameModal');
 
-const modalScoreLabel = document.querySelector('#modalScoreLabel');
+// End Game Modal
+const modalScoreValue = document.querySelector('#modalScoreValue');
+const modalLevelValue = document.querySelector('#modalLevelValue');
 const restartGameBtn = document.querySelector('#restartGameBtn');
 const endGameModal = document.querySelector('#endGameModal');
 
@@ -38,6 +46,21 @@ class Player {
     hitByEnemy() {
         this.color = 'red';
         ctx.fillStyle = this.color;
+        setInterval(() => {
+            this.color = 'white';
+            ctx.fillStyle = this.color;
+        }, 500);
+    }
+
+    levelUp() {
+        this.color = 'yellow';
+        ctx.fillStyle = this.color;
+        levelUpModal.style.display = 'flex';
+        setInterval(() => {
+            this.color = 'white';
+            ctx.fillStyle = this.color;
+            levelUpModal.style.display = 'none';
+        }, 500);
     }
 }
 
@@ -152,7 +175,7 @@ function spawnEnemies() {
 
 function animate() {
     animationId = requestAnimationFrame(animate);
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.17)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     player.draw();
 
@@ -186,17 +209,22 @@ function animate() {
             player.y - enemy.y
         );
         
-        // game over
+        // enemy hits player
         if (playerDistance - enemy.radius - player.radius < 0.1) {
-            life--;
-            if (life === 0) {
+            life -= Math.floor(enemy.radius);
+            lifeValue.innerHTML = life;
+            if (life <= 0) {
+                // game over
                 cancelAnimationFrame(animationId);
-                modalScoreLabel.innerHTML = score;
+                lifeValue.innerHTML = 0;
+                modalScoreValue.innerHTML = score;
+                modalLevelValue.innerHTML = level;
                 endGameModal.style.display = 'flex';
             } else {
-                if (player.collidedEnemies = true) {
-                    
-                }
+                setTimeout(() => {
+                    enemies.splice(enemyIndex, 1);
+                    projectiles.splice(projectileIndex, 1);
+                }, 0);
                 player.hitByEnemy();
             }
         }
@@ -214,8 +242,8 @@ function animate() {
                     particles.push(
                         new Particle( projectile.x, projectile.y,  Math.random() * 2, enemy.color, 
                         {
-                            x: (Math.random() - 0.5) * (Math.random() * 5),
-                            y: (Math.random() - 0.5) * (Math.random() * 7)
+                            x: (Math.random() - 0.5) * (Math.random() * 2),
+                            y: (Math.random() - 0.5) * (Math.random() * 4)
                         })
                     );
                 }
@@ -237,14 +265,17 @@ function animate() {
                     // increase score/xp
                     score += 100;
                     xp += 50;
+                    scoreValue.innerHTML = score;
 
                     // increase level, speed of enemies, reset life
                     if (xp === 1000) {
-                        xp = 0;
                         level++;
-                        life = 3;
+                        player.levelUp();
+                        xp = 0;
+                        life = 100;
+                        levelValue.innerHTML = level;
+                        lifeValue.innerHTML = life;
                     }
-                    scoreValue.innerHTML = score;
                 }
             }
         })
@@ -253,13 +284,20 @@ function animate() {
 
 function init(){
     player = new Player(canvas.width / 2, canvas.height / 2, 15, 'white');
+
     projectiles = [];
     enemies = [];
     particles = [];
+
     score = 0;
     xp = 0;
     level = 1;
-    life = 3;
+    life = 100;
+
+    scoreValue.innerHTML = score;
+    // add xp bar
+    levelValue.innerHTML = level;
+    lifeValue.innerHTML = life;
 }
 
 window.addEventListener('click', (event) => {
@@ -295,6 +333,5 @@ restartGameBtn.addEventListener('click', () => {
     init();
     animate();
     spawnEnemies();
-    scoreValue.innerHTML = 0;
     endGameModal.style.display = 'none';
 });
