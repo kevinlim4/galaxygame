@@ -12,6 +12,9 @@ const lifeValue = document.querySelector('#lifeValue');
 const infoModal = document.querySelector('#infoModal');
 const infoModalValue = document.querySelector('#infoModalValue');
 
+// Status Label
+const statusLabel = document.querySelector('#statusLabel');
+
 // Start Game Modal
 const startGameBtn = document.querySelector('#startGameBtn');
 const startGameModal = document.querySelector('#startGameModal');
@@ -225,6 +228,7 @@ function animate() {
                 modalScoreValue.innerHTML = score;
                 modalLevelValue.innerHTML = level;
                 endGameModal.style.display = 'flex';
+                statusLabel.style.display = 'none';
             } else {
                 setTimeout(() => {
                     enemies.splice(enemyIndex, 1);
@@ -244,8 +248,8 @@ function animate() {
                     particles.push(
                         new Particle( projectile.x, projectile.y,  Math.random() * 2, enemy.color, 
                         {
-                            x: (Math.random() - 0.5) * (Math.random() * 3),
-                            y: (Math.random() - 0.5) * (Math.random() * 5)
+                            x: (Math.random() - 0.5) * (Math.random() * 5),
+                            y: (Math.random() - 0.5) * (Math.random() * 7)
                         })
                     );
                 }
@@ -323,6 +327,7 @@ startGameBtn.addEventListener('click', () => {
     animate();
     spawnEnemies();
     startGameModal.style.display = 'none';
+    statusLabel.style.display = 'block';
 });
 
 restartGameBtn.addEventListener('click', () => {
@@ -330,4 +335,5 @@ restartGameBtn.addEventListener('click', () => {
     animate();
     spawnEnemies();
     endGameModal.style.display = 'none';
+    statusLabel.style.display = 'block';
 });
