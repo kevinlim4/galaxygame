@@ -60,7 +60,7 @@ class Player {
             this.color = 'white';
             ctx.fillStyle = this.color;
             levelUpModal.style.display = 'none';
-        }, 500);
+        }, 1000);
     }
 }
 
@@ -153,7 +153,7 @@ let life;
 
 function spawnEnemies() {
     setInterval(() => {
-        const radius = Math.random() * (30 - 7) + 7;
+        const radius = Math.random() * (30 - 8) + 8; // Enemies size 30-8
         let x;
         let y;
 
@@ -204,13 +204,10 @@ function animate() {
     enemies.forEach((enemy, enemyIndex) => {
         enemy.update();
         
-        const playerDistance = Math.hypot(
-            player.x - enemy.x,
-            player.y - enemy.y
-        );
+        const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
         
         // enemy hits player
-        if (playerDistance - enemy.radius - player.radius < 0.1) {
+        if (distance - enemy.radius - player.radius < 0.1) {
             life -= Math.floor(enemy.radius);
             lifeValue.innerHTML = life;
             if (life <= 0) {
@@ -231,25 +228,22 @@ function animate() {
 
         // when projectiles touch enemy
         projectiles.forEach((projectile, projectileIndex) => {
-            const distance = Math.hypot(
-                projectile.x - enemy.x,
-                projectile.y - enemy.y
-            );
+            const distance = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);
 
-            if (distance - enemy.radius - projectile.radius < 0.1) {
+            if (distance - enemy.radius - projectile.radius < 1) {
                 // create explosion on enemy hit
                 for (let i = 0; i < enemy.radius * 2; i++) {
                     particles.push(
                         new Particle( projectile.x, projectile.y,  Math.random() * 2, enemy.color, 
                         {
-                            x: (Math.random() - 0.5) * (Math.random() * 2),
-                            y: (Math.random() - 0.5) * (Math.random() * 4)
+                            x: (Math.random() - 0.5) * (Math.random() * 3),
+                            y: (Math.random() - 0.5) * (Math.random() * 5)
                         })
                     );
                 }
 
                 // make enemy small or kill if already too small
-                if (enemy.radius - 10 > 7) {
+                if (enemy.radius - 10 > 8) {
                     gsap.to(enemy, {
                         radius: enemy.radius - 10
                     });
@@ -258,8 +252,8 @@ function animate() {
                     }, 0);
                 } else {
                     setTimeout(() => {
-                        enemies.splice(enemyIndex, 1);
                         projectiles.splice(projectileIndex, 1);
+                        enemies.splice(enemyIndex, 1);
                     }, 0);
 
                     // increase score/xp
@@ -268,7 +262,7 @@ function animate() {
                     scoreValue.innerHTML = score;
 
                     // increase level, speed of enemies, reset life
-                    if (xp === 1000) {
+                    if (xp === 2000) {
                         level++;
                         player.levelUp();
                         xp = 0;
@@ -301,25 +295,19 @@ function init(){
 }
 
 window.addEventListener('click', (event) => {
-    const x = canvas.width / 2;
-    const y = canvas.height / 2;
-    const angle = Math.atan2(event.clientY - y, event.clientX - x);
+    const angle = Math.atan2(
+        event.clientY - canvas.height / 2,
+        event.clientX - canvas.width / 2
+    );
     const velocity = { 
         x: Math.cos(angle) * 6, 
         y: Math.sin(angle) * 6
     };
-    projectiles.push(new Projectile(x, y, 5, 'white', velocity));
-});
 
-window.addEventListener('click', (event) => {
-    const x = canvas.width / 2;
-    const y = canvas.height / 2;
-    const angle = Math.atan2(event.clientY - y, event.clientX - x);
-    const velocity = { 
-        x: Math.cos(angle) * 6, 
-        y: Math.sin(angle) * 6
-    };
-    projectiles.push(new Projectile(x, y, 5, 'white', velocity));
+    projectiles.push(new Projectile(
+        canvas.width / 2, canvas.height / 2, 
+        5, 'white', velocity
+    ));
 });
 
 startGameBtn.addEventListener('click', () => {
