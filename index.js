@@ -25,13 +25,6 @@ const modalLevelValue = document.querySelector('#modalLevelValue');
 const restartGameBtn = document.querySelector('#restartGameBtn');
 const endGameModal = document.querySelector('#endGameModal');
 
-ctx.beginPath();
-ctx.arc(canvas.width / 2, canvas.height / 2 - 150, 50, 0, 2 * Math.PI, false);
-ctx.arc(canvas.width / 2 - 150, canvas.height / 2 - 150, 50, 0, 2 * Math.PI, false);
-ctx.arc(canvas.width / 2 + 150, canvas.height / 2 - 150, 50, 0, 2 * Math.PI, false);
-ctx.fillStyle = 'white';
-ctx.fill();
-
 class Player {
     constructor(x, y, radius, color) {
         this.x = x;
@@ -163,6 +156,21 @@ let xp;
 let level;
 let life;
 
+const starsQtde = 150;
+const x = Array.from({length: starsQtde}, () => Math.random() * canvas.offsetWidth);
+const y = Array.from({length: starsQtde}, () => Math.random() * canvas.offsetHeight);
+const radius = Array.from({length: starsQtde}, () => Math.random() * 1.1);
+
+function drawStars() {
+    for (var i = 0; i < starsQtde; i++) {
+        ctx.beginPath();
+        ctx.arc(x[i], y[i], radius[i], 0, 360);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.fill();
+    }
+}
+drawStars();
+
 function spawnEnemies() {
     setInterval(() => {
         const radius = Math.random() * (30 - 8) + 8; // Enemies size 30-8
@@ -189,6 +197,7 @@ function animate() {
     animationId = requestAnimationFrame(animate);
     ctx.fillStyle = 'rgba(0, 0, 0, 0.17)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    drawStars();
     player.draw();
 
     particles.forEach((particle, index) => {
