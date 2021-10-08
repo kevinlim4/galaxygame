@@ -51,11 +51,12 @@ class Player {
         this.color = 'red';
         ctx.fillStyle = this.color;
         infoModalValue.classList.add("text-red-500");
-        infoModalValue.innerHTML = "-" + damage;
+        infoModalValue.innerHTML = `-${damage}`;
         infoModal.style.display = 'flex';
         setInterval(() => {
             this.color = 'white';
             ctx.fillStyle = this.color;
+            infoModalValue.classList.remove("text-red-500");
             infoModal.style.display = 'none';
         }, 1000);
     }
@@ -64,11 +65,12 @@ class Player {
         this.color = 'yellow';
         ctx.fillStyle = this.color;
         infoModalValue.classList.add("text-yellow-400");
-        infoModalValue.innerHTML = "Level up!";
+        infoModalValue.innerHTML = "Level Up!";
         infoModal.style.display = 'flex';
         setInterval(() => {
             this.color = 'white';
             ctx.fillStyle = this.color;
+            infoModalValue.classList.remove("text-yellow-400");
             infoModal.style.display = 'none';
         }, 1000);
     }
