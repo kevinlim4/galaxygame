@@ -65,7 +65,7 @@ class Player {
             ctx.fillStyle = this.color;
             infoModalValue.classList.remove("text-yellow-400");
             infoModal.style.display = 'none';
-        }, 1000);
+        }, 1500);
     }
 }
 
@@ -165,7 +165,7 @@ function drawStars() {
     for (var i = 0; i < starsQtde; i++) {
         ctx.beginPath();
         ctx.arc(x[i], y[i], radius[i], 0, 360);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
         ctx.fill();
     }
 }
@@ -285,7 +285,7 @@ function animate() {
                     scoreValue.innerHTML = score;
 
                     // increase level, speed of enemies, reset life
-                    if (xp === 2000) {
+                    if (xp === 1000) {
                         level++;
                         player.levelUp();
                         xp = 0;

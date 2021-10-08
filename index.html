@@ -4,9 +4,10 @@
     <meta name="viewport" content="user-scalable=no">
     <title>The Poor Man's Galaxy Game</title>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="./index.css" rel="stylesheet">
   </head>
   <body style="background: black">
-    <div class="fixed hidden text-white text-sm ml-2 mt-1 select-none" id="statusLabel">
+    <div class="preesstart text-xs fixed hidden text-white text-sm ml-2 mt-1 select-none" id="statusLabel">
         <span>Score: <span id="scoreValue">0</span></span><br>
         <span>Level: <span id="levelValue">1</span></span><br>
         <span>Health: <span id="lifeValue">100</span></span>
@@ -14,10 +15,10 @@
     
     <!-- Start Game Modal -->
     <div class="fixed inset-0 flex items-center justify-center" id="startGameModal">
-        <div>
-            <h1 class="text-white text-4xl font-bold leading-none mb-10">The Poor Man's Galaxy Game</h1>
+        <div class="text-center">
+            <h1 class="preesstart text-white text-4xl font-bold leading-none mb-10">The Poor Man's Galaxy Game</h1>
             <button 
-                class="bg-purple-800 text-white w-full py-3 rounded-full font-bold"  
+                class="preesstart border-dashed border-white border-4 hover:bg-purple-900 w-1/2 text-white py-3 p-6 rounded-full"
                 id="startGameBtn">
                 Start Game
             </button>
@@ -26,26 +27,26 @@
 
     <!-- Level up Modal -->
     <div class="fixed inset-0 hidden items-center justify-center select-none" id="infoModal">
-        <p class="text-sm leading-none mb-12" id="infoModalValue">Info</p><br>
+        <p class="preesstart text-xs leading-none mb-12" id="infoModalValue">Info</p><br>
     </div>
 
     <!-- Game Over Modal -->
     <div class="fixed inset-0 hidden items-center justify-center" id="endGameModal">
-        <div class="bg-gray-800 max-w-md w-full p-6 text-center">
-            <h1 class="text-white text-5xl font-bold leading-none mb-4">Game Over!</h1>
-            <div class="space-x-10">
+        <div class="bg-black max-w-md w-full p-6 text-center border-dashed border-white border-2">
+            <h1 class="preesstart text-white text-4xl font-bold leading-none mb-12">Game Over!</h1>
+            <div class="space-x-10 mb-6">
                 <div class="inline-block">
-                    <h1 class="text-white text-4xl font-bold leading-none" id="modalScoreValue">0</h1>
-                    <p class="text-sm text-gray-500 mb-4">Points</p>
+                    <h1 class="preesstart text-white text-4xl leading-none" id="modalScoreValue">0</h1>
+                    <p class="preesstart text-xs text-gray-500">Points</p>
                 </div>
                 <div class="inline-block">
-                    <h1 class="text-white text-4xl font-bold leading-none" id="modalLevelValue">0</h1>
-                    <p class="text-sm text-gray-500 mb-4">Level</p> 
+                    <h1 class="preesstart text-white text-4xl leading-none" id="modalLevelValue">0</h1>
+                    <p class="preesstart text-xs text-gray-500">Level</p>
                 </div>
             </div>
             <div>
                 <button 
-                    class="bg-purple-500 text-white w-full py-3 rounded-full font-semibold text-sm" 
+                    class="preesstart border-dashed border-white border-2 hover:bg-purple-900 w-full text-white py-3 p-6 rounded-full"
                     id="restartGameBtn">
                     Play Again
                 </button>
