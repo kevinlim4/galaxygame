@@ -27,6 +27,7 @@ const modalLevelValue = document.querySelector('#modalLevelValue');
 const restartGameBtn = document.querySelector('#restartGameBtn');
 const endGameModal = document.querySelector('#endGameModal');
 
+const PLAYER_SPEED = 3;
 class Player {
     constructor(x, y, radius, color) {
         this.x = x;
@@ -37,36 +38,22 @@ class Player {
 
     draw() {
         if (keyW == true) {
-            this.y -= 2;
+            this.y -= PLAYER_SPEED;
         }
         if (keyA == true) {
-            this.x -= 2;
+            this.x -= PLAYER_SPEED;
         }
         if (keyS == true) {
-            this.y += 2;
+            this.y += PLAYER_SPEED;
         }
         if (keyD == true) {
-            this.x += 2;
+            this.x += PLAYER_SPEED;
         }
 
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         ctx.fillStyle = this.color;
         ctx.fill();
-    }
-
-    hitByEnemy(damage) {
-        this.color = 'red';
-        ctx.fillStyle = this.color;
-        //infoModalValue.classList.add("text-red-500");
-        //infoModalValue.innerHTML = `-${damage}`;
-        //infoModal.style.display = 'flex';
-        setInterval(() => {
-            this.color = 'white';
-            ctx.fillStyle = this.color;
-            //infoModalValue.classList.remove("text-red-500");
-            //infoModal.style.display = 'none';
-        }, 1000);
     }
 
     levelUp() {
@@ -117,6 +104,8 @@ class Enemy {
     }
 
     draw() {
+        
+        
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         ctx.fillStyle = this.color;
@@ -125,8 +114,22 @@ class Enemy {
 
     update() {
         this.draw();
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
+
+        // subtract
+        var dx = player.x - this.x;
+        var dy = player.y - this.y;
+
+        // normalize
+        // (a direction vector has a length of 1)
+        var length = Math.sqrt(dx * dx + dy * dy);
+        if (length) {
+        dx /= length;
+        dy /= length;
+        }
+
+        // move
+        this.x += dx * level;
+        this.y += dy * level;
     }
 }
 
@@ -202,10 +205,10 @@ function spawnEnemies() {
         
         const color = `hsl(${Math.random() * 360}, 50%, 50%)`;
         const angle = Math.atan2(player.y - y, player.x - x);
-        const velocity = { x: Math.cos(angle) * (level + 1), y: Math.sin(angle) * (level + 1) };
+        const velocity = { x: Math.cos(angle) * level, y: Math.sin(angle) * level };
 
         enemies.push(new Enemy(x, y, radius, color, velocity));
-    }, 500);
+    }, 1000);
 }
 
 function animate() {
@@ -260,7 +263,17 @@ function animate() {
                     enemies.splice(enemyIndex, 1);
                     projectiles.splice(projectileIndex, 1);
                 }, 0);
-                player.hitByEnemy(damage);
+
+                // create explosion on enemy hit
+                for (let i = 0; i < player.radius * 2; i++) {
+                    particles.push(
+                        new Particle( player.x, player.y,  Math.random() * 2, player.color, 
+                        {
+                            x: (Math.random() - 0.5) * (Math.random() * 4),
+                            y: (Math.random() - 0.5) * (Math.random() * 6)
+                        })
+                    );
+                }
             }
         }
 
@@ -300,7 +313,7 @@ function animate() {
                     scoreValue.innerHTML = score;
 
                     // increase level, speed of enemies, reset life
-                    if (xp === 1000) {
+                    if (xp === 2000) {
                         level++;
                         player.levelUp();
                         xp = 0;

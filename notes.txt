@@ -1,11 +1,8 @@
 ---------------------------------------------------------
 Doing
 
-?
-
 ---------------------------------------------------------
 Todo
 
-- Implement Movement (WASD)
-- Improve HUD
+- Add Mouse Hold
 - Implement Camera
