@@ -4,5 +4,7 @@ Doing
 ---------------------------------------------------------
 Todo
 
+- Implement Sounds
+- Fix player getting out of screen
 - Add Mouse Hold
 - Implement Camera

@@ -104,8 +104,6 @@ class Enemy {
     }
 
     draw() {
-        
-        
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         ctx.fillStyle = this.color;
@@ -120,7 +118,6 @@ class Enemy {
         var dy = player.y - this.y;
 
         // normalize
-        // (a direction vector has a length of 1)
         var length = Math.sqrt(dx * dx + dy * dy);
         if (length) {
         dx /= length;
@@ -189,6 +186,27 @@ function drawStars() {
 }
 drawStars();
 
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.volume = 0.1;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+
+    this.play = function(){
+        this.sound.play();
+    }
+
+    this.stop = function(){
+        this.sound.pause();
+    }
+}
+//var laserSound = new sound("lasergun.mp3");
+var gameThemeSound = new sound("gametheme.mp3");
+//var explosionSound = new sound("explosion.mp3");;
+
 function spawnEnemies() {
     setInterval(() => {
         const radius = Math.random() * (30 - 8) + 8; // Enemies size 30-8
@@ -253,6 +271,7 @@ function animate() {
             if (life <= 0) {
                 // game over
                 cancelAnimationFrame(animationId);
+                gameThemeSound.stop();
                 lifeValue.innerHTML = 0;
                 modalScoreValue.innerHTML = score;
                 modalLevelValue.innerHTML = level;
@@ -329,7 +348,7 @@ function animate() {
 
 function init(){
     player = new Player(canvas.width / 2, canvas.height / 2, 15, 'white');
-
+    gameThemeSound.play();
     projectiles = [];
     enemies = [];
     particles = [];
