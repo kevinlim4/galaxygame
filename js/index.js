@@ -120,8 +120,8 @@ class Enemy {
         // normalize
         var length = Math.sqrt(dx * dx + dy * dy);
         if (length) {
-        dx /= length;
-        dy /= length;
+            dx /= length;
+            dy /= length;
         }
 
         // move
@@ -204,7 +204,7 @@ function sound(src) {
     }
 }
 //var laserSound = new sound("lasergun.mp3");
-var gameThemeSound = new sound("gametheme.mp3");
+var gameThemeSound = new sound("../assets/gametheme.mp3");
 //var explosionSound = new sound("explosion.mp3");;
 
 function spawnEnemies() {
@@ -220,7 +220,7 @@ function spawnEnemies() {
             x = Math.random() * canvas.width;
             y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius;
         }
-        
+
         const color = `hsl(${Math.random() * 360}, 50%, 50%)`;
         const angle = Math.atan2(player.y - y, player.x - x);
         const velocity = { x: Math.cos(angle) * level, y: Math.sin(angle) * level };
@@ -246,9 +246,9 @@ function animate() {
 
     projectiles.forEach((projectile, index) => {
         projectile.update();
-        
+
         // remove off-screen projectiles
-        if (projectile.x + projectile.radius < 0 || 
+        if (projectile.x + projectile.radius < 0 ||
             projectile.x - projectile.radius > canvas.width ||
             projectile.y + projectile.radius < 0 ||
             projectile.y - projectile.radius > canvas.height) {
@@ -260,9 +260,9 @@ function animate() {
 
     enemies.forEach((enemy, enemyIndex) => {
         enemy.update();
-        
+
         const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
-        
+
         // enemy hits player
         if (distance - enemy.radius - player.radius < 0.1) {
             const damage = Math.floor(enemy.radius);
@@ -286,7 +286,7 @@ function animate() {
                 // create explosion on enemy hit
                 for (let i = 0; i < player.radius * 2; i++) {
                     particles.push(
-                        new Particle( player.x, player.y,  Math.random() * 2, player.color, 
+                        new Particle( player.x, player.y,  Math.random() * 2, player.color,
                         {
                             x: (Math.random() - 0.5) * (Math.random() * 4),
                             y: (Math.random() - 0.5) * (Math.random() * 6)
@@ -304,7 +304,7 @@ function animate() {
                 // create explosion on enemy hit
                 for (let i = 0; i < enemy.radius * 2; i++) {
                     particles.push(
-                        new Particle( projectile.x, projectile.y,  Math.random() * 2, enemy.color, 
+                        new Particle( projectile.x, projectile.y,  Math.random() * 2, enemy.color,
                         {
                             x: (Math.random() - 0.5) * (Math.random() * 5),
                             y: (Math.random() - 0.5) * (Math.random() * 7)
@@ -369,13 +369,13 @@ window.addEventListener('click', (event) => {
         event.clientY - player.y,
         event.clientX - player.x
     );
-    const velocity = { 
-        x: Math.cos(angle) * 6, 
+    const velocity = {
+        x: Math.cos(angle) * 6,
         y: Math.sin(angle) * 6
     };
 
     projectiles.push(new Projectile(
-        player.x, player.y, 
+        player.x, player.y,
         5, 'white', velocity
     ));
 });
@@ -424,7 +424,7 @@ function onKeyDown(event) {
 
 function onKeyUp(event) {
     var keyCode = event.keyCode;
-  
+
     switch (keyCode) {
         case 87: //w
             keyW = false;
@@ -440,4 +440,3 @@ function onKeyUp(event) {
             break;
     }
   }
-  
